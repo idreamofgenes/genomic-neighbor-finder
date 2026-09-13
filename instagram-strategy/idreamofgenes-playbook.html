@@ -1,0 +1,683 @@
+<title>iDreamofGenes Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+/* ============================================================
+   Palette derived from the two imaging modalities in her feed:
+   LIGHT  = brightfield H&E  (hematoxylin violet, eosin pink, slide glass)
+   DARK   = confocal fluorescence (DAPI field, violet + yellow signal)
+   ============================================================ */
+:root{
+  --ground:#FBF7F8;
+  --surface:#FFFFFF;
+  --surface-2:#F5ECEF;
+  --ink:#1E1524;
+  --ink-soft:#4A3B52;
+  --muted:#857A8C;
+  --rule:#E5DAE1;
+  --rule-hard:#C9B8C4;
+  --hema:#5B2D7E;        /* hematoxylin — primary accent */
+  --hema-deep:#411F5C;
+  --eosin:#C4507A;       /* eosin — secondary accent */
+  --caution:#96650F;
+  --good:#2F6B4F;
+  --bar-tech:#5B2D7E;
+  --bar-life:#C9B8C4;
+  --bar-meta:#B98BC9;
+  --bar-self:#C4507A;
+  --shadow:0 1px 2px rgba(30,21,36,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#080B18;
+    --surface:#0E1324;
+    --surface-2:#161C31;
+    --ink:#E4E8F5;
+    --ink-soft:#B0B8CE;
+    --muted:#7C8599;
+    --rule:#232A3E;
+    --rule-hard:#3A445F;
+    --hema:#A98BFF;
+    --hema-deep:#C3AEFF;
+    --eosin:#F07BA8;
+    --caution:#E3C349;
+    --good:#6FCFA0;
+    --bar-tech:#A98BFF;
+    --bar-life:#3A445F;
+    --bar-meta:#6D6099;
+    --bar-self:#F07BA8;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#080B18;
+  --surface:#0E1324;
+  --surface-2:#161C31;
+  --ink:#E4E8F5;
+  --ink-soft:#B0B8CE;
+  --muted:#7C8599;
+  --rule:#232A3E;
+  --rule-hard:#3A445F;
+  --hema:#A98BFF;
+  --hema-deep:#C3AEFF;
+  --eosin:#F07BA8;
+  --caution:#E3C349;
+  --good:#6FCFA0;
+  --bar-tech:#A98BFF;
+  --bar-life:#3A445F;
+  --bar-meta:#6D6099;
+  --bar-self:#F07BA8;
+  --shadow:none;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Spectral",Georgia,"Times New Roman",serif;
+  font-size:17px;
+  line-height:1.66;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:20px;padding-block:0 80px}
+
+/* ---------- type ---------- */
+h1,h2,h3,.disp{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif}
+.mono,.eyebrow,.tag,th,.num,.eq{font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace}
+h1{
+  font-size:clamp(36px,7.4vw,66px);
+  line-height:.98;font-weight:800;letter-spacing:-.03em;
+  margin:0 0 20px;text-wrap:balance;
+}
+h2{font-size:clamp(25px,4.4vw,36px);line-height:1.08;font-weight:700;letter-spacing:-.022em;margin:0;text-wrap:balance}
+h3{font-size:19px;line-height:1.3;font-weight:700;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance}
+h4{
+  font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  margin:30px 0 12px;
+}
+p{margin:0 0 16px;max-width:65ch}
+.lede{font-size:20.5px;line-height:1.52;color:var(--ink-soft);max-width:62ch}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--muted)}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:italic}
+a{color:var(--hema);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--hema);outline-offset:3px;border-radius:2px}
+
+/* ---------- masthead ---------- */
+.masthead{padding-block:52px 0;margin-bottom:44px}
+.masthead .eyebrow{display:block;margin-bottom:22px}
+.vitals{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));
+  gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:34px;
+}
+.vital{background:var(--surface);padding:13px 14px 12px}
+.vital .k{
+  font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;
+}
+.vital .v{
+  font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:23px;
+  letter-spacing:-.02em;font-variant-numeric:tabular-nums;display:block;line-height:1.05;
+}
+.vital .v.stale{color:var(--eosin)}
+.vital .v.ok{color:var(--good)}
+
+/* ---------- protocol contents ---------- */
+.toc{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding-block:4px;margin-bottom:8px}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+.toc li{
+  counter-increment:t;display:grid;grid-template-columns:34px minmax(0,1fr) auto;
+  gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--rule);
+}
+.toc li:last-child{border-bottom:0}
+.toc li::before{
+  content:counter(t,decimal-leading-zero);font-family:"JetBrains Mono",monospace;
+  font-size:12px;font-weight:700;color:var(--hema);
+}
+.toc .t{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:16.5px;letter-spacing:-.01em}
+.toc .w{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* ---------- steps ---------- */
+.step{padding-top:52px;margin-top:44px;border-top:1px solid var(--rule-hard)}
+.step:first-of-type{border-top:0}
+.step-head{margin-bottom:22px}
+.step-tags{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.snum{
+  font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;letter-spacing:.14em;
+  color:var(--surface);background:var(--hema);padding:4px 9px;border-radius:2px;
+}
+.tag{
+  font-size:10px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);border:1px solid var(--rule-hard);padding:3px 9px;border-radius:2px;white-space:nowrap;
+}
+
+/* ---------- panels ---------- */
+.panel{background:var(--surface);border:1px solid var(--rule);padding:22px 24px;margin:26px 0;box-shadow:var(--shadow)}
+.panel :last-child{margin-bottom:0}
+.caution{border:0;border-left:3px solid var(--caution);background:var(--surface-2);padding:18px 22px;margin:26px 0}
+.caution :last-child{margin-bottom:0}
+.caution .lbl{
+  display:block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--caution);margin-bottom:9px;
+}
+.verdict{border:0;border-left:3px solid var(--hema);background:var(--surface);padding:18px 22px;margin:26px 0;box-shadow:var(--shadow)}
+.verdict :last-child{margin-bottom:0}
+.verdict .lbl{
+  display:block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--hema);margin-bottom:9px;
+}
+
+/* ---------- lists ---------- */
+ul.list{margin:0 0 18px;padding-left:0;list-style:none;max-width:65ch}
+ul.list li{position:relative;padding-left:19px;margin-bottom:9px}
+ul.list li::before{content:"";position:absolute;left:1px;top:.72em;width:7px;height:1.5px;background:var(--eosin)}
+ol.steps{margin:0 0 18px;padding-left:0;list-style:none;counter-reset:s;max-width:65ch}
+ol.steps li{position:relative;padding-left:31px;margin-bottom:11px;counter-increment:s}
+ol.steps li::before{
+  content:counter(s);position:absolute;left:0;top:.2em;
+  font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:var(--hema);
+  border:1px solid var(--rule-hard);border-radius:50%;width:20px;height:20px;
+  display:grid;place-items:center;line-height:1;
+}
+
+/* ---------- chart ---------- */
+.chart{margin:28px 0 10px;position:relative}
+/* Bars start flush at x=0 of the plot box so widths read directly against
+   the gridlines: full box width = 6'000 views. */
+.chart-grid{padding-right:96px}
+.plot{position:relative;padding-bottom:28px}
+.gridline{position:absolute;top:0;bottom:28px;width:1px;background:var(--rule);pointer-events:none}
+.gridline.zero{background:var(--rule-hard)}
+.row{display:block;padding:4px 0;position:relative;z-index:1}
+.row .lbl{
+  display:block;font-size:13px;color:var(--ink-soft);line-height:1.3;margin-bottom:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.row .track{display:flex;align-items:center;gap:8px;position:relative;z-index:2}
+.bar{height:11px;border-radius:0 1px 1px 0;flex:none;min-width:2px}
+.bar.tech{background:var(--bar-tech)}
+.bar.life{background:var(--bar-life)}
+.bar.meta{background:var(--bar-meta)}
+.bar.self{background:var(--bar-self)}
+.val{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+.pin{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);letter-spacing:.08em;flex:none}
+.axis{position:absolute;left:0;right:0;bottom:0;height:22px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+.axis span{position:absolute;top:6px;transform:translateX(-50%);white-space:nowrap}
+.axis span.first{transform:none}
+.axis span.last{transform:translateX(-100%)}
+.key{display:flex;flex-wrap:wrap;gap:8px 20px;margin:16px 0 0;padding:0;list-style:none}
+.key li{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-soft)}
+.sw{width:12px;height:12px;border-radius:1px;flex:none}
+figcaption{font-size:14px;color:var(--muted);margin-top:16px;max-width:66ch;line-height:1.55}
+
+/* ---------- table ---------- */
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:540px;margin:4px 0 0}
+caption{text-align:left;padding-bottom:12px;color:var(--muted);font-size:14px;max-width:66ch}
+th{
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;
+  text-align:left;padding:0 14px 9px 0;border-bottom:1.5px solid var(--ink);white-space:nowrap;
+}
+td{padding:11px 14px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-size:15.5px}
+td.n,th.n{text-align:right;padding-right:18px;font-variant-numeric:tabular-nums;font-family:"JetBrains Mono",monospace;font-size:13.5px}
+tbody tr:last-child td{border-bottom:1.5px solid var(--ink)}
+
+/* ---------- pillars ---------- */
+.pillars{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0}
+.pillar{background:var(--surface);padding:16px 20px;display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;align-items:start}
+.pillar .pct{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:19px;color:var(--hema);font-variant-numeric:tabular-nums;letter-spacing:-.02em;padding-top:2px}
+.pillar h3{margin-bottom:3px;font-size:16.5px}
+.pillar p{margin:0;font-size:15px;color:var(--ink-soft);max-width:58ch}
+
+/* ---------- hooks ---------- */
+.hooks{margin:24px 0;display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.hook{background:var(--surface);padding:14px 20px;display:grid;grid-template-columns:18px minmax(0,1fr);gap:12px;align-items:baseline}
+.hook .mk{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:700}
+.hook.bad .mk{color:var(--eosin)}
+.hook.good .mk{color:var(--good)}
+.hook p{margin:0;font-size:15.5px}
+.hook.bad p{color:var(--muted)}
+
+/* ---------- ideas / two-col ---------- */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0}
+.grid2 > div{background:var(--surface);padding:20px 22px}
+.grid2 h3{color:var(--hema)}
+.grid2 :last-child{margin-bottom:0}
+.ideas ul.list li{margin-bottom:8px;font-size:16px}
+.ideas h4{margin-top:28px}
+.ideas h4:first-child{margin-top:8px}
+
+/* ---------- timing block ---------- */
+.phase{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0}
+.phase > div{background:var(--surface);padding:20px 22px}
+.phase .when{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--eosin);display:block;margin-bottom:10px}
+.phase ul.list li{font-size:15px;margin-bottom:7px}
+.phase :last-child{margin-bottom:0}
+
+/* ---------- templates ---------- */
+pre{
+  font-family:"JetBrains Mono",monospace;font-size:13px;line-height:1.62;
+  background:var(--surface-2);padding:16px 18px;overflow-x:auto;margin:0 0 16px;
+  white-space:pre-wrap;word-break:break-word;color:var(--ink);border-left:2px solid var(--rule-hard);
+}
+.closing{margin-top:60px;padding-top:28px;border-top:2px solid var(--ink)}
+.sig{font-size:14px;color:var(--muted);margin-top:26px}
+.refs{font-size:14.5px;color:var(--ink-soft)}
+.refs li{margin-bottom:8px}
+
+@media (max-width:640px){
+  body{font-size:16.5px}
+  .wrap{padding-block:0 60px}
+  .step{padding-top:40px;margin-top:34px}
+  .panel,.caution,.verdict,.grid2 > div,.pillar,.hook,.phase > div{padding-left:16px;padding-right:16px}
+  .pillar{grid-template-columns:42px minmax(0,1fr);gap:12px}
+  .toc li{grid-template-columns:28px minmax(0,1fr);gap:10px}
+  .toc .w{grid-column:2;margin-top:2px}
+  .row .lbl{font-size:12px}
+  .chart-grid{padding-right:76px}
+  .axis span.last{font-size:9.5px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <span class="eyebrow">Instagram strategy · @idreamofgenes_ · September 2026</span>
+  <h1>You are not starting. You are restarting — and the data is already in.</h1>
+  <p class="lede">A protocol for iDreamofGenes: what your existing 32 posts already proved, the one blocker that is actually blocking you, and a format you can run with a full-time life and a small child.</p>
+
+  <div class="vitals">
+    <div class="vital"><span class="k">Posts</span><span class="v">32</span></div>
+    <div class="vital"><span class="k">Followers</span><span class="v">725</span></div>
+    <div class="vital"><span class="k">Following</span><span class="v">686</span></div>
+    <div class="vital"><span class="k">Best post</span><span class="v ok">5'638</span></div>
+    <div class="vital"><span class="k">Last posted</span><span class="v stale">2024</span></div>
+    <div class="vital"><span class="k">Views / 30d</span><span class="v">215</span></div>
+  </div>
+</header>
+
+<section class="toc">
+  <ol>
+    <li><span class="t">Your grid already answered the niche question</span><span class="w">Read first</span></li>
+    <li><span class="t">The real blocker, named properly</span><span class="w">Day 0</span></li>
+    <li><span class="t">Two names, one job each</span><span class="w">Day 0 · decide</span></li>
+    <li><span class="t">The anchor series and five pillars</span><span class="w">Week 1</span></li>
+    <li><span class="t">Format, hooks, 24 shootable ideas</span><span class="w">Week 1–4</span></li>
+    <li><span class="t">Production, and what to clear before you film</span><span class="w">Before filming</span></li>
+    <li><span class="t">Restart, cadence, and what to measure</span><span class="w">Ongoing</span></li>
+  </ol>
+</section>
+
+<!-- ============ 01 ============ -->
+<section class="step">
+  <div class="step-head">
+    <div class="step-tags"><span class="snum">STEP 01</span><span class="tag">Read first</span><span class="tag">~15 min</span></div>
+    <h2>Your grid already answered the niche question</h2>
+  </div>
+
+  <p>The reason Yannick's playbook felt good and yours feels impossible is not that his niche is easier. It is that he had <strong>nothing to analyse</strong> — 8 posts, 0 reels, no signal at all. Every line of his document is a guess dressed up as a plan.</p>
+
+  <p>You have 32 posts and a signal that is genuinely clean. I read the view counts off your grid and sorted them. Here is what came out.</p>
+
+  <figure class="chart">
+    <div class="chart-grid">
+      <div class="plot">
+      <div class="gridline zero" style="left:0"></div>
+      <div class="gridline" style="left:25%"></div>
+      <div class="gridline" style="left:50%"></div>
+      <div class="gridline" style="left:75%"></div>
+      <div class="gridline" style="left:calc(100% - 1px)"></div>
+
+      <div class="row"><span class="lbl">"hi guys I think it's time I…" talking head</span><span class="track"><span class="bar self" style="width:93.97%"></span><span class="val">5'638</span><span class="pin">PIN</span></span></div>
+      <div class="row"><span class="lbl">Histology 101: staining sections</span><span class="track"><span class="bar tech" style="width:90.07%"></span><span class="val">5'404</span><span class="pin">PIN</span></span></div>
+      <div class="row"><span class="lbl">Creating a poster using BioRender</span><span class="track"><span class="bar tech" style="width:75.10%"></span><span class="val">4'506</span></span></div>
+      <div class="row"><span class="lbl">Lit-up trees at night</span><span class="track"><span class="bar life" style="width:40.82%"></span><span class="val">2'449</span></span></div>
+      <div class="row"><span class="lbl">Scanning a melanoma sample on the slidescanner</span><span class="track"><span class="bar tech" style="width:20.17%"></span><span class="val">1'210</span></span></div>
+      <div class="row"><span class="lbl">Histology 101: cutting</span><span class="track"><span class="bar tech" style="width:18.50%"></span><span class="val">1'110</span></span></div>
+      <div class="row"><span class="lbl">Hike in Braunwald — things to do as a family</span><span class="track"><span class="bar life" style="width:18.50%"></span><span class="val">1'110</span></span></div>
+      <div class="row"><span class="lbl">"A typical PhD life" list reel</span><span class="track"><span class="bar meta" style="width:17.08%"></span><span class="val">1'025</span></span></div>
+      <div class="row"><span class="lbl">Sterile hood / lab coat reel</span><span class="track"><span class="bar tech" style="width:16.55%"></span><span class="val">993</span></span></div>
+      <div class="row"><span class="lbl">Histology 101: hematoxylin &amp; eosin</span><span class="track"><span class="bar tech" style="width:16.10%"></span><span class="val">966</span></span></div>
+      <div class="row"><span class="lbl">Mounting sections</span><span class="track"><span class="bar tech" style="width:14.75%"></span><span class="val">885</span></span></div>
+      <div class="row"><span class="lbl">"This is your reminder that…" — desk</span><span class="track"><span class="bar meta" style="width:12.45%"></span><span class="val">747</span></span></div>
+      <div class="row"><span class="lbl">Cell culture: changing medium</span><span class="track"><span class="bar tech" style="width:11.82%"></span><span class="val">709</span></span></div>
+      <div class="row"><span class="lbl">Top 5 podcasts I listen to at work</span><span class="track"><span class="bar meta" style="width:11.13%"></span><span class="val">668</span></span></div>
+      <div class="row"><span class="lbl">PhD retreat</span><span class="track"><span class="bar life" style="width:10.20%"></span><span class="val">612</span></span></div>
+      <div class="row"><span class="lbl">Blumen zum selber Schneiden — family</span><span class="track"><span class="bar life" style="width:9.85%"></span><span class="val">591</span></span></div>
+      <div class="row"><span class="lbl">Moments in September</span><span class="track"><span class="bar life" style="width:9.83%"></span><span class="val">590</span></span></div>
+      <div class="row"><span class="lbl">A day in the life — lab edition</span><span class="track"><span class="bar meta" style="width:9.63%"></span><span class="val">578</span></span></div>
+      <div class="row"><span class="lbl">"This is your reminder that…" — centrifuge</span><span class="track"><span class="bar meta" style="width:9.50%"></span><span class="val">570</span></span></div>
+      <div class="row"><span class="lbl">"This is your reminder that…" — microtome</span><span class="track"><span class="bar meta" style="width:9.45%"></span><span class="val">567</span></span></div>
+      <div class="row"><span class="lbl">Snow landscape</span><span class="track"><span class="bar life" style="width:8.45%"></span><span class="val">507</span></span></div>
+      <div class="row"><span class="lbl">Sounds of science</span><span class="track"><span class="bar tech" style="width:8.15%"></span><span class="val">489</span></span></div>
+      <div class="row"><span class="lbl">Confocal microscopy</span><span class="track"><span class="bar tech" style="width:7.25%"></span><span class="val">435</span><span class="pin">PIN</span></span></div>
+
+      <div class="axis"><span class="first" style="left:0">0</span><span style="left:25%">1'500</span><span style="left:50%">3'000</span><span style="left:75%">4'500</span><span class="last" style="left:100%">6'000 views</span></div>
+      </div>
+    </div>
+
+    <ul class="key">
+      <li><span class="sw" style="background:var(--bar-tech)"></span>Technique / how-to</li>
+      <li><span class="sw" style="background:var(--bar-meta)"></span>Relatable PhD-life</li>
+      <li><span class="sw" style="background:var(--bar-life)"></span>Travel / family / mood</li>
+      <li><span class="sw" style="background:var(--bar-self)"></span>Personal to camera</li>
+    </ul>
+
+    <figcaption>Views read from your profile screenshots (Sept 2026), covering the 23 posts where the count is legible. <strong>PIN</strong> = pinned, so its total has been accumulating far longer than the rest. Caveats worth holding: views are the weakest of the five metrics that matter (see Step 07) — they say nothing about saves, shares or follows; the posts span roughly 2023–24, during which Instagram changed both its ranking and what it counts as a view; and n is small. Treat this as direction, not proof.</figcaption>
+  </figure>
+
+  <h4>What it says</h4>
+
+  <ul class="list">
+    <li><strong>Your ceiling is not 725.</strong> Two posts cleared 5'000 and one cleared 4'500 — six to eight times your follower count. That only happens when Instagram pushes you to people who don't know you. The distribution mechanism works on you already.</li>
+    <li><strong>Your single best non-pinned post is a software tutorial for academics.</strong> BioRender posters, 4'506. It was not your prettiest post and not your most personal. It was the most <em>useful to someone with a job to do this week</em>.</li>
+    <li><strong>"Histology 101" is a working series.</strong> Four episodes, all in the upper half, the top one at 5'404. You built a repeatable format, it performed, and then you stopped running it.</li>
+    <li><strong>Pinning does not rescue a post.</strong> Your confocal post is pinned and sits at 435 — dead last. Format carries posts, placement doesn't.</li>
+    <li><strong>Landscape, travel and family content sits at your follower floor.</strong> Roughly 500–700, i.e. it reached your existing followers and stopped. The one exception, the lit-up trees at 2'449, is a trending-aesthetic post — it brings views, not the audience you want.</li>
+  </ul>
+
+  <div class="verdict">
+    <span class="lbl">Verdict</span>
+    <p>The content that broke out of your follower base is <strong>procedural</strong>: how a thing is physically done, or how to use a tool. It is not personal, not opinion, and requires no credential you don't have. That is very good news, because it is also the content that solves the problem in Step 02.</p>
+  </div>
+</section>
+
+<!-- ============ 02 ============ -->
+<section class="step">
+  <div class="step-head">
+    <div class="step-tags"><span class="snum">STEP 02</span><span class="tag">Day 0</span><span class="tag">No filming needed</span></div>
+    <h2>The real blocker, named properly</h2>
+  </div>
+
+  <p>You wrote that the biggest problem is having family, friends and ex-colleagues on the account, and that it would be so much easier if it were only strangers. That is the correct diagnosis and it has a name: <strong>context collapse</strong> — when one post has to work for every audience you have ever had at once, so you write for the harshest reader in the room and end up posting nothing (Marwick &amp; boyd, 2011).</p>
+
+  <p>Three straight answers about it.</p>
+
+  <h4>1. There is no privacy setting that fixes this</h4>
+  <p>On a public account you cannot hide feed posts from specific followers. Close Friends only covers Stories. Removing a follower does not stop them looking — the profile is still public to them. So there is no button. Stop looking for one.</p>
+
+  <h4>2. The fear is attached to disclosure, not to science</h4>
+  <p>Look at what you are actually afraid of them seeing: the unfinished PhD, the burnout, the years that didn't end where you planned. That is <em>confessional</em> content. But you already decided — in your own words — that you don't want that on iDreamofGenes and don't want to lead with your background right now. You have already solved this and not noticed.</p>
+  <p>Nobody's aunt has an opinion about how you cut a 5 µm cryosection. Your ex-supervisor has no angle on a BioRender tutorial. Procedural content is <strong>low-disclosure by construction</strong>: there is nothing in it for anyone to judge, because it is about the work, not about you. The format that performs best for you is the same format that makes your audience problem go away.</p>
+
+  <h4>3. If you still want a clean break, take it deliberately, not by drifting</h4>
+  <p>Starting fresh is legitimate. But price it honestly: you would give up 725 people, a working series, and three posts that already proved reach — to solve a discomfort that the right format largely removes anyway. My recommendation is to keep the account and change the content. If after eight weeks of posting you find you are still self-censoring, <em>then</em> start clean, with evidence rather than dread.</p>
+
+  <div class="caution">
+    <span class="lbl">The one thing to accept</span>
+    <p>Some people who know you will watch you restart something publicly, and a few will have thoughts. That is the actual cost, and it is unavoidable on any public account. It is also much smaller than it feels at 22:13 on a Tuesday. The people most likely to comment are the ones least likely to be watching in six weeks.</p>
+  </div>
+</section>
+
+<!-- ============ 03 ============ -->
+<section class="step">
+  <div class="step-head">
+    <div class="step-tags"><span class="snum">STEP 03</span><span class="tag">Day 0</span><span class="tag">Decision required</span></div>
+    <h2>Two names, one job each</h2>
+  </div>
+
+  <p>You named two accounts. They are two different products and mixing them is what makes both feel heavy.</p>
+
+  <div class="grid2">
+    <div>
+      <h3>iDreamofGenes</h3>
+      <p><strong>Run this one. Now.</strong> Cancer research, shown rather than explained-at. Zero personal disclosure required. The domain exists, the handle exists, the archive exists, the format is proven. This is a going concern that is paused, not a startup.</p>
+    </div>
+    <div>
+      <h3>FromHereIGrow</h3>
+      <p><strong>Park it.</strong> This is where the burnout, the unfinished PhD and the rebuild belong — if you ever want them public at all. Do not link the two. Do not launch it in parallel. Running two accounts now means running neither.</p>
+    </div>
+  </div>
+
+  <h4>Your positioning sentence</h4>
+  <div class="panel">
+    <p style="font-size:19px;line-height:1.5;margin:0"><em>"I spent five years at the bench in cancer research. I show you what actually happens to a tumour sample — the part nobody outside the lab has ever seen."</em></p>
+  </div>
+
+  <p>Note what this sentence does not claim. Not a doctor. Not a finished PhD. Not an authority on treatment. <strong>Five years at the bench is a fact</strong>, and for craft content it is a stronger credential than a title, because the thing you are demonstrating is the thing you actually did with your hands. You never have to defend it.</p>
+
+  <p>On the bridge you said you're missing — scientist to doctor, scientist to public: I don't have reliable data on how many clinicians consume research content on Instagram, and I'd guess that audience lives on LinkedIn and X rather than here, but I genuinely don't know. What I <em>can</em> see in your own numbers is where the demand already is: people with a task (the BioRender post) and people who have never seen the inside of a lab. The sample's journey serves both — it starts in an operating theatre and ends in a figure in a paper. That is the bridge, and it needs no clinical credential.</p>
+
+  <h4>Profile fixes — one evening, highest return in this document</h4>
+  <ol class="steps">
+    <li><strong>Change the name field</strong> (currently "Whitney"). Instagram searches the name field, not the bio. Make it <span class="mono">Whitney · Cancer Research</span>. Almost nobody does this and it works immediately.</li>
+    <li><strong>Rewrite the bio around what the viewer gets</strong>, not who you are. Current bio is an identity list. Suggested:<br>
+      <span class="mono" style="font-size:14px;display:block;margin-top:8px;color:var(--ink-soft)">What actually happens inside a cancer lab 🔬<br>5 years at the bench · sarcoma &amp; melanoma<br>New technique every week ⬇️</span></li>
+    <li><strong>Keep the handle.</strong> @idreamofgenes_ is memorable, on-topic and already on a domain you own. Drop the trailing underscore if it ever frees up; otherwise leave it.</li>
+    <li><strong>Confirm Creator account</strong> so you get non-follower reach and retention numbers. You cannot run Step 07 without them.</li>
+    <li><strong>Put idreamofgenes.ch in the bio link.</strong> It is currently doing nothing.</li>
+    <li><strong>Re-pin.</strong> Your pinned confocal post is your worst performer. Pin the series opener instead once you make it.</li>
+    <li><strong>Leave the archive alone.</strong> Don't delete, don't mass-archive. Post forward. New posts push old ones down the grid within a month.</li>
+  </ol>
+</section>
+
+<!-- ============ 04 ============ -->
+<section class="step">
+  <div class="step-head">
+    <div class="step-tags"><span class="snum">STEP 04</span><span class="tag">Week 1</span><span class="tag">Structural</span></div>
+    <h2>The anchor series and five pillars</h2>
+  </div>
+
+  <p>The one thing worth stealing from Yannick's document is structural, not tactical: <strong>a counted series with an open end</strong>. "Course 7 of 96" converts a viewer into a follower, because there is something to come back for. A standalone good video does not.</p>
+
+  <h4>The anchor: one sample, start to finish</h4>
+  <div class="panel">
+    <h3 style="color:var(--hema)">"From the operating room to the paper — what happens to a tumour sample"</h3>
+    <p>One numbered episode per step. Episode 1 is the sample arriving; the last is the figure in a published paper. Ten to fifteen episodes, then you run it again with a different sample type and different techniques.</p>
+    <p style="margin-bottom:0">Why this and not "Histology 101" on its own: histology is one chapter of a story you can already tell end to end, and you have the footage for most of it — microtome, water bath, H&amp;E, slidescanner, confocal. The journey frame gives every episode a reason to exist and gives the viewer a reason to stay. Histology 101 becomes episodes 3 to 6, not the whole channel.</p>
+  </div>
+
+  <h4>The five pillars</h4>
+  <p>Every post goes in exactly one. If an idea fits none of them, you don't make it.</p>
+
+  <div class="pillars">
+    <div class="pillar"><span class="pct">35%</span><div><h3>The sample's journey</h3><p>The anchor series. Numbered, same structure each time, one step per episode. This is what people follow you for.</p></div></div>
+    <div class="pillar"><span class="pct">25%</span><div><h3>Tools &amp; skills</h3><p>BioRender, Fiji/ImageJ, figure design, reading a paper, poster layout, reference managers. Your proven top performer and your most-saved content. Saves are the strongest growth signal there is.</p></div></div>
+    <div class="pillar"><span class="pct">20%</span><div><h3>What we actually know about cancer</h3><p>One mechanism per post, in plain language, no jargon left unexplained. This is your bridge to people outside science — and the pillar with the largest possible audience.</p></div></div>
+    <div class="pillar"><span class="pct">15%</span><div><h3>The reality of research</h3><p>The failed experiment, the seven-times-repeated protocol, what a week at the bench actually contains. Builds the attachment that technique posts alone never will — without becoming confessional.</p></div></div>
+    <div class="pillar"><span class="pct">5%</span><div><h3>You</h3><p>Small dose. Switzerland, the lab, your face on camera. Enough to be a person, not enough to be the subject. <strong>Zero</strong> burnout or PhD-exit content on this account — that belongs to FromHereIGrow or to nobody.</p></div></div>
+  </div>
+
+  <div class="caution">
+    <span class="lbl">The trap your grid shows</span>
+    <p>Your family and landscape posts will keep getting warm likes, because 725 people know you personally. That is not a signal — that is your address book. From now on judge every post on <strong>non-follower reach</strong>, not likes. Your 4'506-view BioRender post probably got fewer likes than the Braunwald hike and was worth ten times as much.</p>
+  </div>
+</section>
+
+<!-- ============ 05 ============ -->
+<section class="step">
+  <div class="step-head">
+    <div class="step-tags"><span class="snum">STEP 05</span><span class="tag">Week 1–4</span><span class="tag">The craft</span></div>
+    <h2>Format, hooks, 24 shootable ideas</h2>
+  </div>
+
+  <h4>The 60-second template — same every time</h4>
+  <p>Recognisability beats variety. The sameness is what turns a format into a channel.</p>
+  <ol class="steps">
+    <li><strong>0–2 s · The object.</strong> Hands, the instrument, the tissue. No greeting, no face, no "hi guys". A number or a physical fact on screen.</li>
+    <li><strong>2–8 s · The stake.</strong> One sentence saying why this step exists and what goes wrong without it.</li>
+    <li><strong>8–40 s · The doing.</strong> Your hands, close, real time or lightly sped. This is the whole product — people watch for the craft.</li>
+    <li><strong>40–52 s · The result.</strong> The slide, the screen, the image. The payoff has to be visible.</li>
+    <li><strong>52–60 s · The counter and the question.</strong> "Step 4 of 12. What do you want to see next?" Never "follow me".</li>
+  </ol>
+
+  <h4>Hooks: the first 1.5 seconds decide everything</h4>
+  <div class="hooks">
+    <div class="hook bad"><span class="mk">✕</span><p>"Hi guys, today I'll show you how we do histology."</p></div>
+    <div class="hook good"><span class="mk">✓</span><p>"This is a piece of a human tumour. It is five micrometres thick — about a tenth of a hair."</p></div>
+    <div class="hook bad"><span class="mk">✕</span><p>"Some tips for making a scientific poster."</p></div>
+    <div class="hook good"><span class="mk">✓</span><p>"My first conference poster took two days in PowerPoint. This one took forty minutes."</p></div>
+    <div class="hook bad"><span class="mk">✕</span><p>"Let's talk a bit about melanoma."</p></div>
+    <div class="hook good"><span class="mk">✓</span><p>"Melanoma is one of the most heavily mutated cancers there is. That is exactly why immunotherapy works on it."</p></div>
+    <div class="hook bad"><span class="mk">✕</span><p>"A day in the life of a PhD student."</p></div>
+    <div class="hook good"><span class="mk">✓</span><p>"I ran this experiment seven times before it worked. Here is what was wrong the first six."</p></div>
+  </div>
+
+  <p>Three rules that always hold. <strong>Burn in the subtitles</strong> — most people watch without sound, and your accent and pace are not the issue, the silence is. <strong>English, not German</strong> — your subject is not geographically bound the way Yannick's is, and English multiplies your addressable audience for the same effort. <strong>End on a question</strong>, every time.</p>
+
+  <div class="ideas">
+    <h4>The sample's journey — the anchor series</h4>
+    <ul class="list">
+      <li>What happens to a tumour in the first ten minutes after it leaves the operating room</li>
+      <li>Why we freeze tissue at −80 °C, and what it looks like when you get it wrong</li>
+      <li>Cutting a 5 µm section — a tenth of the width of a hair, by hand</li>
+      <li>The water bath: why a section has to float before it can go on glass</li>
+      <li>Why nuclei turn blue and cytoplasm turns pink — the two dyes behind every histology image</li>
+      <li>The slidescanner: turning a piece of glass into a multi-gigabyte image</li>
+      <li>Antibody staining: how you make one single protein glow and nothing else</li>
+      <li>Why the confocal image is blue and yellow, and what each colour is</li>
+      <li>What a pathologist sees on this slide that I don't</li>
+      <li>The last step: from slide to the figure in a published paper</li>
+    </ul>
+
+    <h4>Tools &amp; skills — your highest-saved pillar</h4>
+    <ul class="list">
+      <li>A conference poster in forty minutes with BioRender (remake your best post, properly)</li>
+      <li>Fiji / ImageJ: the four functions that do ninety per cent of image analysis</li>
+      <li>How to read a paper you're not a specialist in — eight minutes, in this order</li>
+      <li>Why most scientific figures look bad, and the three fixes</li>
+      <li>How to tell whether a paper is any good before you read it</li>
+      <li>The reference manager setup I'd choose again from scratch</li>
+    </ul>
+
+    <h4>What we actually know about cancer — your bridge to everyone else</h4>
+    <ul class="list">
+      <li>Why melanoma responds to immunotherapy and most sarcomas don't</li>
+      <li>"Mutation" does not mean what most people think it means</li>
+      <li>What a mouse model actually is — and the three things it cannot tell you</li>
+      <li>Sarcoma: rare, often young patients, very little funding. What that means in practice.</li>
+      <li>Why a cancer drug costs what it costs — the attrition from bench to approval</li>
+      <li>What "personalised medicine" looks like from the side of the person running the experiment</li>
+    </ul>
+
+    <h4>The reality of research</h4>
+    <ul class="list">
+      <li>The experiment that failed seven times, and the one thing that fixed it</li>
+      <li>An honest breakdown of where a research week actually goes, hour by hour</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 06 ============ -->
+<section class="step">
+  <div class="step-head">
+    <div class="step-tags"><span class="snum">STEP 06</span><span class="tag">Before you film</span><span class="tag">Blocking</span></div>
+    <h2>Production, and what to clear before you film</h2>
+  </div>
+
+  <div class="caution">
+    <span class="lbl">Clear this first — it is not optional</span>
+    <p>Filming in a research lab that handles human tumour material is not the same as filming a golf course. Before a single reel: talk to your PI <em>and</em> the institute's communications office, and get the answer in writing. Assume, until told otherwise, that <strong>unpublished data, anything patient-derived or potentially identifiable, and colleagues' faces and screens are all off-limits</strong>. Swiss human-research rules and institutional policy both bite here, and a research institution's reputational sensitivity is real.</p>
+    <p style="margin-bottom:0">This is your version of Yannick's employer conversation, and it is more consequential than his. Do it in week one, not after your first post travels.</p>
+  </div>
+
+  <div class="caution">
+    <span class="lbl">One thing I need from you</span>
+    <p style="margin-bottom:0">Do you still have lab access? It changes about a third of this plan. <strong>If yes</strong>, the anchor series runs as written. <strong>If no</strong>, it still works — pillars 2, 3 and 4 need no bench at all, your existing archive footage covers several episodes, and "the journey of a sample" can be told with your own past material plus screen recordings and drawn explainers. Don't let this question stall the other six steps.</p>
+  </div>
+
+  <h4>One lab day = three weeks of content</h4>
+  <p>You have a small child and a full life. A plan needing three shoot days a week dies in week two. Shoot the whole list below in a single session and cut it later:</p>
+  <ul class="list">
+    <li>The room, wide, three seconds — your establishing shot</li>
+    <li>The instrument doing its thing, close, on a small tripod, no hands in frame</li>
+    <li><strong>Your hands doing the step</strong>, close. Hands outperform faces for craft content, and they cost you nothing in exposure.</li>
+    <li>The one visually striking moment: the section floating on the water bath, the stain going purple, the confocal image resolving on screen</li>
+    <li>A talking-head hook, eight seconds, said at the bench</li>
+    <li>The result — the slide, the screen, the figure</li>
+    <li>Three or four unedited Story fragments as you go</li>
+  </ul>
+
+  <div class="grid2">
+    <div>
+      <h3>Kit</h3>
+      <p>A phone clamp tripod (~CHF 40) and a clip-on wireless mic (~CHF 100–150). Lab rooms are loud — ventilation and fume hoods are why science reels sound bad. CapCut to edit, free. That is the entire list; you do not need a camera.</p>
+    </div>
+    <div>
+      <h3>Cadence</h3>
+      <p><strong>Two reels a week</strong> — Tuesday and Sunday evening. One carousel a fortnight. Stories three days a week. Ninety minutes on Sunday to cut and schedule the week. Two a week sustained for a year beats four a week for a month, and the second is what you'll be tempted to do in October.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 ============ -->
+<section class="step">
+  <div class="step-head">
+    <div class="step-tags"><span class="snum">STEP 07</span><span class="tag">Ongoing</span><span class="tag">Measurement</span></div>
+    <h2>Restart, cadence, and what to measure</h2>
+  </div>
+
+  <h4>Do not post an explanation</h4>
+  <p>You have not posted since 2024 and will feel you owe the account a "so, I've been away" post. You don't, and that post would drag you straight into the disclosure you decided against in Step 02. <strong>Post 1 is episode 1 of the series.</strong> No apology, no preamble. Nobody scrolling past has any idea there was a gap, and the people who do know will work it out.</p>
+
+  <h4>The five numbers — everything else is noise</h4>
+  <div class="scroller">
+    <table>
+      <caption>Rules of thumb rather than published benchmarks — use them as thresholds to beat, and recalibrate against your own first twenty posts once you have ninety days of data.</caption>
+      <thead><tr><th>Metric</th><th>Why it's the one that counts</th><th class="n">Target</th></tr></thead>
+      <tbody>
+        <tr><td>Non-follower reach</td><td>The only real growth indicator. Your address book doesn't count.</td><td class="n">&gt; 50%</td></tr>
+        <tr><td>3-second retention</td><td>Tells you whether the hook works — nothing else does</td><td class="n">&gt; 60%</td></tr>
+        <tr><td>Saves + shares</td><td>Strongest algorithmic signal. Tutorials live here.</td><td class="n">&gt; 2% of reach</td></tr>
+        <tr><td>Profile visits → follows</td><td>Tells you whether the profile itself converts</td><td class="n">&gt; 5%</td></tr>
+        <tr><td>New followers per reel</td><td>Your only growth currency</td><td class="n">&gt; 20</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="phase">
+    <div>
+      <span class="when">Day 1–14 · Foundation</span>
+      <ul class="list">
+        <li>Clear filming permissions in writing (Step 06)</li>
+        <li>Profile rebuild — name field, bio, link, Creator account</li>
+        <li>Film one session, cut four episodes</li>
+        <li>Post episode 1, pin it</li>
+      </ul>
+    </div>
+    <div>
+      <span class="when">Day 15–45 · Rhythm</span>
+      <ul class="list">
+        <li>Two reels a week without exception</li>
+        <li>Reply to every comment in the first hour</li>
+        <li>Ten minutes a day commenting on larger science accounts — real sentences, never emoji</li>
+        <li>Write the five numbers down weekly</li>
+      </ul>
+    </div>
+    <div>
+      <span class="when">Day 46–90 · Amplify</span>
+      <ul class="list">
+        <li>Find your strongest format and double it</li>
+        <li>First collaboration with another science creator</li>
+        <li>Route traffic to idreamofgenes.ch</li>
+        <li>Re-read this document against real numbers</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>YouTube — the short answer is no, with one exception</h4>
+  <p>Don't launch a YouTube channel. Long-form is a different craft with a different weekly cost, and starting a second thing before the first is running is how both end up dead. <strong>Do</strong> create the channel and post the identical vertical videos as Shorts — it costs you the upload and nothing else, it reaches a different audience, and unlike Instagram, YouTube is searchable, so an episode about cryosectioning keeps finding people three years from now. Revisit long-form when iDreamofGenes has been running weekly for six months.</p>
+
+  <h4>Honest expectation setting</h4>
+  <p>Your niche is smaller per post than golf travel. It is also higher-intent: someone who watches a nine-minute-equivalent explanation of antibody staining is a far more valuable follower than someone who liked a picture of Portugal. I'm not going to give you a follower number and a date, because I'd be making it up. What I will say is that the constraint on this account is not audience size — cancer is one of the most-searched health subjects there is — it is whether you post twice a week for six months. Weeks three to eight will feel flat. That is the normal shape of the curve and it is where most people stop.</p>
+
+  <div class="verdict">
+    <span class="lbl">The three decisions for this week</span>
+    <p><strong>One:</strong> iDreamofGenes is a science-craft channel; FromHereIGrow is parked. <strong>Two:</strong> keep the account and the followers you have, and change the content instead of the audience. <strong>Three:</strong> book the conversation about filming permissions, because it gates everything else.</p>
+  </div>
+</section>
+
+<footer class="closing">
+  <h4>Reference</h4>
+  <ul class="refs list">
+    <li>Marwick, A. E., &amp; boyd, d. (2011). I tweet honestly, I tweet passionately: Twitter users, context collapse, and the imagined audience. <em>New Media &amp; Society</em>, 13(1), 114–133.</li>
+  </ul>
+  <p class="sig">Post-level figures read from profile screenshots dated 13 Sept 2026. Platform metric targets in Step 07 are working heuristics, not literature values — flagged as such deliberately. Worth re-running against ninety days of real Creator-account data once you have it.</p>
+</footer>
+
+</div>
